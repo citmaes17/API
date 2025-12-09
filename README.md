@@ -10,7 +10,7 @@ de seguimiento según el **canal y el objetivo** de negocio.
 
 ## 🧱 Arquitectura del Proyecto
 
-\`\`\`
+```text
 LeadFlowAI_FastAPI_Frontend/
 │
 ├── backend/        → API con FastAPI + SQLite
@@ -19,13 +19,13 @@ LeadFlowAI_FastAPI_Frontend/
 │   ├── llm_service.py
 │   ├── init_db.py
 │   ├── models.sql
-│   ├── requirements.txt
+│   └── requirements.txt
 │
 └── frontend/       → Panel visual HTML + CSS + JS
     ├── index.html
     ├── styles.css
     └── app.js
-\`\`\`
+```
 
 📡 API local → `http://127.0.0.1:8000`  
 🖥 Panel UI → `http://127.0.0.1:5500/index.html`  
@@ -51,38 +51,37 @@ LeadFlowAI_FastAPI_Frontend/
 
 ## 🌐 Endpoints de la API
 
-📌 Documentación: http://127.0.0.1:8000/docs
+📌 Documentación interactiva: `http://127.0.0.1:8000/docs`
 
+### Leads
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| GET | /leads | Listar leads |
-| POST | /leads | Crear lead |
-| GET | /leads/{id} | Ver lead |
-| PUT | /leads/{id} | Actualizar lead |
-| DELETE | /leads/{id} | Eliminar lead |
+| GET | `/leads` | Listar leads |
+| POST | `/leads` | Crear lead |
+| GET | `/leads/{id}` | Ver lead |
+| PUT | `/leads/{id}` | Actualizar lead |
+| DELETE | `/leads/{id}` | Eliminar lead |
 
 ### Interacciones
-
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| GET | /leads/{id}/interacciones | Ver historial |
-| POST | /leads/{id}/interacciones | Registrar |
+| GET | `/leads/{id}/interacciones` | Ver historial |
+| POST | `/leads/{id}/interacciones` | Registrar interacción |
 
 ### IA
-
 | Método | Ruta | Acción |
 |--------|------|--------|
-| POST | /leads/{id}/segmentar | Determina funnel + temperatura |
-| POST | /leads/{id}/siguiente-mensaje | Genera copy comercial |
+| POST | `/leads/{id}/segmentar` | Determina funnel + temperatura |
+| POST | `/leads/{id}/siguiente-mensaje` | Genera copy comercial |
 
-Ejemplo JSON:
-\`\`\`json
+Ejemplo de cuerpo JSON:
+```json
 {
   "canal": "email",
   "objetivo": "conseguir_llamada",
   "tono": "cercano_profesional"
 }
-\`\`\`
+```
 
 ---
 
@@ -90,43 +89,55 @@ Ejemplo JSON:
 
 ### Backend
 
-\`\`\`bash
+```bash
 cd backend
 pip install -r requirements.txt
 python init_db.py
 uvicorn main:app --reload
-\`\`\`
+```
 
-📌 http://127.0.0.1:8000  
-📌 http://127.0.0.1:8000/docs  
+📌 API → http://127.0.0.1:8000  
+📌 Swagger → http://127.0.0.1:8000/docs  
 
 ### Frontend
 
-\`\`\`bash
+```bash
 cd frontend
 python -m http.server 5500
-\`\`\`
+```
 
-📌 http://127.0.0.1:5500/index.html
+📌 UI → http://127.0.0.1:5500/index.html  
+
+> ⚠️ El backend debe estar activo antes de abrir el frontend.
 
 ---
 
 ## 🗄 Modelo de Datos
 
-### Tabla leads
-- Información básica y comercial del contacto
+### Tabla `leads`
+- `nombre`, `email`, `empresa`, `sector`, `fuente`
+- `mensaje_inicial`, `necesidades`
+- `etapa_funnel` → awareness / consideration / decision
+- `temperatura` → frio / tibio / caliente
+- `tipo_contacto` → lead / oportunidad / cliente
+- `estado` → nuevo / en_proceso / ganado / perdido
+- `creado_en`
 
-### Tabla interacciones
-- Registro de conversaciones y acciones
+### Tabla `interacciones`
+- `lead_id` (FK)
+- `canal`, `rol`, `mensaje`
+- `tipo`, `resultado`
+- `fecha`
 
 ---
 
-## 🚀 Roadmap
+## 🚀 Roadmap Futuro
 
-- Conectar a una LLM real como OpenAI
+- Integración con LLM real (OpenAI u otra)
+- Autenticación y roles de usuario
 - Dashboard de métricas comerciales
-- Filtros y búsqueda avanzada
-- Roles y autenticación
+- Filtros y búsqueda avanzada de leads
+- Guardar automáticamente la sugerencia IA como interacción
 
 ---
 
@@ -134,16 +145,16 @@ python -m http.server 5500
 
 | Capa | Herramientas |
 |------|--------------|
-| Backend | FastAPI + SQLite |
-| Frontend | HTML5 + CSS3 + JavaScript |
-| API Docs | Swagger / OpenAPI |
+| Backend | Python, FastAPI, SQLite, Uvicorn |
+| Frontend | HTML5, CSS3, JavaScript Vanilla |
+| Documentación | Swagger / OpenAPI |
 
 ---
 
 ## 👩‍💻 Autora
 
 **Cindy Tatiana Marín Espinosa**  
-Bootcamp Ciencia de Datos — **The Bridge**, Valencia 🇪🇸  
+Bootcamp Ciencia de Datos — The Bridge, Valencia 🇪🇸  
 
 > IA aplicada a marketing, ventas y automatización comercial.
 
